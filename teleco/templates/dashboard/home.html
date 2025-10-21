@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Teleco Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Teleco Insights</h1>
+    <div class="columns is-multiline">
+      <div class="column is-one-quarter">
+        <div class="box has-text-centered">
+          <p class="heading">Total Customers</p>
+          <p class="title">{{ total_customers }}</p>
+        </div>
+      </div>
+      <div class="column is-one-quarter">
+        <div class="box has-text-centered">
+          <p class="heading">Revenue (This Month)</p>
+          <p class="title">${{ total_revenue_month }}</p>
+        </div>
+      </div>
+      <div class="column is-one-quarter">
+        <div class="box has-text-centered">
+          <p class="heading">Active Subscriptions</p>
+          <p class="title">{{ active_subscriptions }}</p>
+        </div>
+      </div>
+      <div class="column is-one-quarter">
+        <div class="box has-text-centered">
+          <p class="heading">Calls (Today)</p>
+          <p class="title">{{ calls_today }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <h2 class="subtitle">Revenue Trends</h2>
+          <canvas id="revenueChart" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+(async () => {
+  const res = await fetch('/api/analytics/revenue-trend-month/');
+  const data = await res.json();
+  const ctx = document.getElementById('revenueChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [{
+        label: 'Revenue',
+        data: data.values,
+        borderColor: 'rgb(75, 192, 192)',
+        fill: false,
+      }]
+    },
+    options: { responsive: true }
+  });
+})();
+</script>
+</body>
+</html>

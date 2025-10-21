@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>HVC Leaderboards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Top 1000 High-Value Customers</h1>
+
+    <form method="get" class="mb-4">
+      <div class="field is-grouped">
+        <div class="control">
+          <div class="select">
+            <select name="kind">
+              <option value="REVENUE" {% if kind == 'REVENUE' %}selected{% endif %}>Revenue</option>
+              <option value="CALLS" {% if kind == 'CALLS' %}selected{% endif %}>Calls</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <select name="period">
+              <option value="HOURLY" {% if selected_period == 'HOURLY' %}selected{% endif %}>Hourly</option>
+              <option value="DAILY" {% if selected_period == 'DAILY' %}selected{% endif %}>Daily</option>
+              <option value="WEEKLY" {% if selected_period == 'WEEKLY' %}selected{% endif %}>Weekly</option>
+              <option value="MONTHLY" {% if selected_period == 'MONTHLY' %}selected{% endif %}>Monthly</option>
+              <option value="ANNUAL" {% if selected_period == 'ANNUAL' %}selected{% endif %}>Annual</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <button class="button is-primary" type="submit">Apply</button>
+        </div>
+      </div>
+    </form>
+
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>MSISDN</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in entries %}
+        <tr>
+          <td>{{ e.rank }}</td>
+          <td>{{ e.customer.msisdn }}</td>
+          <td>{{ e.value }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No data yet. Run leaderboards.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>
